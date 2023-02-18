@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
+struct AlbmuModel {
+    let title: String
+    let imageCount: String
+    let thumbnailImage: UIImage
+}
+
 final class AlbumCell: UITableViewCell {
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.text = "Recent"
@@ -33,7 +39,7 @@ final class AlbumCell: UITableViewCell {
         return stackView
     }()
     
-    private let thumbnailImageView: UIImageView = {
+    let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "person.fill")
@@ -50,6 +56,12 @@ final class AlbumCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(_ model: AlbumModel) {
+        self.titleLabel.text = model.title
+        self.imageCountLabel.text = "\(model.albumCount)"
+        self.thumbnailImageView.image = model.thumbnail
+    }
+    
     private func setupLayouts() {
         [self.titleLabel, self.imageCountLabel].forEach {
             self.infoStackView.addArrangedSubview($0)
@@ -60,6 +72,7 @@ final class AlbumCell: UITableViewCell {
         }
         
         self.thumbnailImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(70)
         }

@@ -11,9 +11,9 @@ import Photos
 
 final class AlbumViewController: UIViewController {
     
-    private var albums = [PHAssetCollection]()
-    private let imageManager = PHCachingImageManager()
-    
+    private let manager = AlbumDataManager()
+    private(set) var models = [AlbumModel]()
+        
     private let albumTableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = 85
@@ -26,6 +26,13 @@ final class AlbumViewController: UIViewController {
         self.setUpLayouts()
         self.setUpNavigation()
         self.configure(self.albumTableView)
+        self.bind()
+    }
+    
+    private func bind() {
+        self.manager.checkPermission()
+        self.models = manager.albumDataRelay.value
+        self.albumTableView.reloadData()
     }
     
     private func setUpLayouts() {
@@ -45,18 +52,17 @@ final class AlbumViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
- 
 
 }
 
 extension AlbumViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return albums.count
+        return models.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(type: AlbumCell.self, for: indexPath)
-//        cell.configure(albums[indexPath.row])
+        cell.configure(models[indexPath.row])
         return cell
     }
     
