@@ -24,11 +24,15 @@ final class DetailCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(_ image: UIImage) {
+        self.photoImageView.image = image
+    }
+    
     private func setupLayouts() {
         self.addSubview(photoImageView)
         
         self.photoImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().inset(10)
         }
     }
     

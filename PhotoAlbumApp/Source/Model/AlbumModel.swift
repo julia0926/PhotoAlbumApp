@@ -12,4 +12,10 @@ struct AlbumModel {
     let albumCount: Int
     let thumbnail: UIImage
     let photos: [UIImage]
+    let alertInfo: [AlertModel]
+}
+
+struct AlertModel {
+    let fileName: String
+    let fileSize: String
 }

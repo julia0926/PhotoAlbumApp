@@ -8,12 +8,6 @@
 import UIKit
 import SnapKit
 
-struct AlbmuModel {
-    let title: String
-    let imageCount: String
-    let thumbnailImage: UIImage
-}
-
 final class AlbumCell: UITableViewCell {
     
     let titleLabel: UILabel = {

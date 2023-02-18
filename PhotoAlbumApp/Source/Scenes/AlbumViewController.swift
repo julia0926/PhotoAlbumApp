@@ -12,7 +12,7 @@ import Photos
 final class AlbumViewController: UIViewController {
     
     private let manager = AlbumDataManager()
-    private(set) var models = [AlbumModel]()
+    private(set) var items = [AlbumModel]()
         
     private let albumTableView: UITableView = {
         let tableView = UITableView()
@@ -31,7 +31,7 @@ final class AlbumViewController: UIViewController {
     
     private func bind() {
         self.manager.checkPermission()
-        self.models = manager.albumDataRelay.value
+        self.items = manager.albumDataRelay.value
         self.albumTableView.reloadData()
     }
     
@@ -57,12 +57,12 @@ final class AlbumViewController: UIViewController {
 
 extension AlbumViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(type: AlbumCell.self, for: indexPath)
-        cell.configure(models[indexPath.row])
+        cell.configure(items[indexPath.row])
         return cell
     }
     
@@ -71,6 +71,10 @@ extension AlbumViewController: UITableViewDataSource {
 extension AlbumViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailViewController = DetailViewController()
+        let item = items[indexPath.row]
+        detailViewController.navigationTitle = item.title
+        detailViewController.imageItems = item.photos
+        detailViewController.alertItems = item.alertInfo
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
