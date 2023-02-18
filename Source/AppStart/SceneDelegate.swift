@@ -17,9 +17,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         let feedViewController = AlbumViewController()
         feedViewController.view.backgroundColor = .systemBackground
-        window.rootViewController = feedViewController
+        let navigationController = UINavigationController(rootViewController: feedViewController)
+        navigationController.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
+
 
 }
 
