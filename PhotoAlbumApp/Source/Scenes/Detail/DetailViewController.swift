@@ -15,23 +15,21 @@ final class DetailViewController: UIViewController {
     
     private lazy var photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = CGFloat(cellSpacing)
-        layout.minimumInteritemSpacing = CGFloat(cellSpacing)
-        let collectionView = UICollectionView(frame: .zero,
-                                              collectionViewLayout: layout)
+        layout.scrollDirection = .vertical
+        layout.sectionInset = .zero
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(DetailCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
     }()
     
-    private let cellSpacing: Int = 4
-    
+    private let cellSpacing: CGFloat = 4
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpNavigation()
         self.setUpLayouts()
-        print(alertItems)
     }
     
     private func setUpNavigation() {
@@ -46,6 +44,7 @@ final class DetailViewController: UIViewController {
         }
     }
     
+    
 }
 
 extension DetailViewController: UICollectionViewDataSource {
@@ -58,7 +57,6 @@ extension DetailViewController: UICollectionViewDataSource {
         cell.configure(imageItems[indexPath.row])
         return cell
     }
-    
 }
 
 extension DetailViewController: UICollectionViewDelegate {
@@ -72,10 +70,20 @@ extension DetailViewController: UICollectionViewDelegate {
     }
 }
 
-
 extension DetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size =  Int(UIScreen.main.bounds.width / 3)
-        return CGSize(width: size - (cellSpacing * 6), height: 100)
+        
+        let width = collectionView.frame.width / 3 - cellSpacing
+        
+        return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return cellSpacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
+        return cellSpacing
     }
 }
